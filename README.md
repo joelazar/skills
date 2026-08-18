@@ -20,11 +20,7 @@ My [dotfiles](https://github.com/joelazar/dotfiles) do this during first-run set
 
 ### Matt Pocock ([mattpocock/skills](https://github.com/mattpocock/skills))
 
-`ask-matt`, `code-review`, `codebase-design`, `diagnosing-bugs`,
-`grill-me`, `grill-with-docs`, `grilling`, `handoff`, `implement`,
-`improve-codebase-architecture`, `prototype`, `research`,
-`setup-matt-pocock-skills`, `tdd`, `teach`, `to-spec`, `to-tickets`,
-`wait-what`, `wayfinder`, `writing-great-skills`
+`improve-codebase-architecture`, `writing-great-skills`
 
 (`writing-great-skills` is from an earlier version of that repo.)
 
@@ -50,10 +46,6 @@ Docs: <https://www.aihero.dev/skills>
 ### Paul Bakaus ([pbakaus/impeccable](https://github.com/pbakaus/impeccable))
 
 `impeccable` (Apache 2.0). Docs: <https://impeccable.style>
-
-### tldraw ([tldraw Desktop](https://tldraw.dev))
-
-`tldraw-offline`, installed by the tldraw Desktop agent-skills installer.
 
 ## Mine
 
