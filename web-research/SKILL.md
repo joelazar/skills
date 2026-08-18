@@ -2,6 +2,7 @@
 name: web-research
 description: "Synthesized answers from the web: a fact with sources, a comparison or multi-step question, or a second opinion when the user says \"use google\" or \"ask claude\". For raw result links or reading one URL, use the websearch and webfetch tools instead."
 allowed-tools: [Bash, Read]
+disable-model-invocation: true
 ---
 
 # Web research

@@ -1,6 +1,7 @@
 ---
 name: simplify
 description: Use when the user wants recently modified code simplified without changing behavior. Apply the repository's current standards, improve clarity, remove unnecessary complexity, and keep the work scoped to code touched in the current session unless the user asks for a broader pass.
+disable-model-invocation: true
 ---
 
 # Simplify

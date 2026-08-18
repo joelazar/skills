@@ -46,8 +46,8 @@ curl -s http://localhost:7236/readme
 - `POST /api/search`: run JavaScript with an `api` object. Use this to discover docs, read shapes and bindings, capture screenshots, and query the editor API reference.
 - `POST /api/docs/create`: create a new named `.tldraw` file, open it in a new window, and save it to disk. Use this when the task needs a fresh document rather than an already-open one.
 - `POST /api/doc/:id/exec`: run JavaScript with a live tldraw `editor` scoped to one document. Use this for canvas edits.
-- `POST /api/doc/:id/script-workspace`: expose live script paths for direct durable document-script and asset edits.
-- `GET /api/doc/:id/script-status`: inspect watcher state for `script/**` edits and find `errorLogPath`.
+- `POST /api/doc/:id/script-workspace`: expose a locally owned document's live script paths for direct durable document-script and asset edits.
+- `GET /api/doc/:id/script-status`: inspect a locally owned document's watcher state for `script/**` edits and find `errorLogPath`.
 
 The code-taking POST endpoints accept raw JavaScript as the request body (`content-type: text/plain`) or a JSON body `{"code": "..."}`, and wrap the code in an async function so top-level `await` works. Prefer raw bodies for shell use.
 
@@ -78,6 +78,21 @@ curl -s -X POST http://localhost:$PORT/api/search \
   -d '{"code":"const doc = await api.getFocusedDoc(); return doc ? await api.getBindings(doc.id) : []"}'
 ```
 
+Every listed doc has `ownership: 'local' | 'remote'`. A remote doc's opaque `id` works with `/exec`, `api.getShapes()`, `api.getBindings()`, and screenshots, but its `documentId`, `filePath`, and `unsavedChanges` are `null`: only the host owns those facts, and `host` carries the `host:port` sharing it. Remote edits sync into the host working copy. Do not call `helpers.saveDoc()`, open `/script-workspace`, or claim the host archive was saved for a remote doc.
+
+A local doc also reports `sharedToLan`. True means the board is open to LAN right now and other people are editing it as you work: read before you write, and never clear a page you did not create.
+
+## Scripts on a shared board
+
+Writing or editing a document script for a board that is (or may become) shared changes what the script may do, because **every participant's editor runs the whole bundle** — `config.js` before it mounts, `main.js` after — and nothing elects a writer:
+
+- Registration and rendering (`config.js` utils, view-only reactions) must run on every client, identically. A client that doesn't register a script-defined shape type renders an inert placeholder instead.
+- Writes happen once per client unless guarded. Gate them on `ctx.app.board.isHost` — true in the editor that owns the file, false in one that joined — and keep continuous work (`tick` handlers, timers, simulations) behind the same guard. A never-shared board has one editor and it is the host, so the guard is correct offline too.
+- Create with stable ids via `helpers.createShapeIfMissing` / `createShapesIfMissing`; never clear-and-redraw a page other people are on.
+- Keep per-client state (hover, selection, "which card is flipped for me") in module scope, not in shape props — writing it to the document broadcasts one person's UI to everyone.
+
+Read the `scripts-on-a-board-shared-over-lan` recipe from `api.recipes` before writing one.
+
 ## Creating documents
 
 When the task needs a fresh document (not one of the open canvases), `POST /api/docs/create` with a JSON body `{"name": "..."}` creates `<name>.tldraw`, opens it in a new window, and saves it to disk immediately. The name takes a `.tldraw` extension or none — never legacy `.tldr`, which the app opens but does not create. Optional `"directory"` is an absolute path to an existing folder; the default is the user's Documents folder. It never overwrites — an existing file with that name is a `409`. The response returns the new doc's `id`, `documentId`, `filePath`, `name`, and `windowId` — use that `id` directly with `/api/doc/:id/exec` and the `api.*` reads, no `api.getDocs()` re-discovery needed. Do not create the file yourself with filesystem tools.
@@ -96,6 +111,7 @@ curl -s -X POST http://localhost:$PORT/api/docs/create \
 - `stack-existing-boxes` — Stack existing boxes
 - `add-durable-behavior-with-a-document-script` — Add durable behavior with a document script
 - `editable-furniture-with-anchored-internals` — Editable furniture with anchored internals
+- `scripts-on-a-board-shared-over-lan` — Scripts on a board shared over LAN
 - `clickable-card-or-button-ui` — Clickable card or button UI
 - `connection-dependent-behavior` — Connection-dependent behavior
 - `animation-simulation-loop` — Animation / simulation loop
@@ -107,7 +123,7 @@ Fetch `/readme` when an endpoint fails or you need API details not covered here.
 
 ## Durable UI Behavior
 
-For durable UI behavior, open `/script-workspace`, write `script/main.js`, check `script-status`, then verify behavior once. `script-status` returns a derived `state` field — treat `state: "applied"` as success; `"pending"` means the watcher hasn't applied the current file yet — poll again and it resolves (a file saved while the app was restarting is applied automatically the next time you open `/script-workspace` or read `script-status`, no manual re-save needed); `"error"` means the apply failed (read `lastApplyError` / `errorLogPath`). Branch on `state` rather than comparing the raw digests yourself. The `/script-workspace` response reports `isDefaultScript` (true while `script/main.js` is still the untouched starter template, pre-created when absent) — when `isDefaultScript` is false there is a preexisting script to extend, not clobber. Read `mainJsPath` to see the current contents before editing (and read it once first if your file tools refuse to write a file they have not read). Do not spend the run searching for pointer/click APIs — read the clickable-UI recipe from `api.recipes` first.
+For durable UI behavior on a locally owned document, open `/script-workspace`, write `script/main.js`, check `script-status`, then verify behavior once. `script-status` returns a derived `state` field — treat `state: "applied"` as success; `"pending"` means the watcher hasn't applied the current file yet — poll again and it resolves (a file saved while the app was restarting is applied automatically the next time you open `/script-workspace` or read `script-status`, no manual re-save needed); `"error"` means the apply failed (read `lastApplyError` / `errorLogPath`). Branch on `state` rather than comparing the raw digests yourself. The `/script-workspace` response reports `isDefaultScript` (true while `script/main.js` is still the untouched starter template, pre-created when absent) — when `isDefaultScript` is false there is a preexisting script to extend, not clobber. Read `mainJsPath` to see the current contents before editing (and read it once first if your file tools refuse to write a file they have not read). Remote boards have no local script workspace or watcher status; their host owns the script files. Do not spend the run searching for pointer/click APIs — read the clickable-UI recipe from `api.recipes` first.
 
 ## Shape format
 
@@ -124,6 +140,8 @@ editor.createShape({
 })
 await helpers.saveDoc()
 ```
+
+The `helpers.saveDoc()` call above is only for `ownership: 'local'`. Omit it for a remote doc; its edits sync to the host working copy and only the host saves the archive.
 
 Use `api.getShapes(doc.id)` to inspect existing raw shape records before mutating them.
 
@@ -142,8 +160,8 @@ Use `api.getShapes(doc.id)` to inspect existing raw shape records before mutatin
 1. Restate the intended outcome in concrete canvas terms.
 2. Choose durability:
    - Static drawing edits such as moving, arranging, labeling, or styling shapes use `/exec`.
-   - Durable behavior such as clickable UI, animations, reactive layouts, or "run on open" logic uses `/script-workspace` and direct filesystem edits under `script/**`. Read the worked recipes from `api.recipes` (via `/api/search`) before building durable behavior.
-3. Verify once with records from `api.getShapes()`, `api.getBindings()`, `api.getScriptStatus()`, or a screenshot when visual placement is uncertain. Save the document with `helpers.saveDoc()` if you like.
+   - Durable behavior on a locally owned document such as clickable UI, animations, reactive layouts, or "run on open" logic uses `/script-workspace` and direct filesystem edits under `script/**`. Read the worked recipes from `api.recipes` (via `/api/search`) before building durable behavior. Remote boards have no local script workspace.
+3. Verify once with records from `api.getShapes()`, `api.getBindings()`, `api.getScriptStatus()`, or a screenshot when visual placement is uncertain. Save only a locally owned document with `helpers.saveDoc()`; remote edits sync to the host working copy.
 4. Stop after one successful verification unless the user explicitly asks for debugging.
 
 Never edit `.tldraw` archive files directly while they are open, and never edit `db.sqlite`, `db.sqlite-wal`, `db.sqlite-shm`, `metadata.json`, `.lock`, or `.script-workspace/**`.
@@ -194,7 +212,8 @@ curl -s -X POST http://localhost:$PORT/api/search \
   -H "authorization: Bearer $TOKEN" \
   -d '{"code":"const [doc] = await api.getDocs(); return await api.getShapes(doc.id)"}'
 
-# Mutate and if you like, save, with /exec, then verify once with api.getShapes().
+# Mutate a LOCAL doc and save with /exec, then verify once with api.getShapes().
+# For a remote doc, omit helpers.saveDoc(); its host owns archive saving.
 curl -s -X POST http://localhost:$PORT/api/doc/DOC_ID/exec \
   -H 'content-type: application/json' \
   -H "authorization: Bearer $TOKEN" \
