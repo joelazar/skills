@@ -20,7 +20,9 @@ My [dotfiles](https://github.com/joelazar/dotfiles) do this during first-run set
 
 ### Matt Pocock ([mattpocock/skills](https://github.com/mattpocock/skills))
 
-`improve-codebase-architecture`, `writing-great-skills`
+`grilling`, `improve-codebase-architecture`, `writing-great-skills`
+
+(`grilling` is made user-invoked here, replacing upstream's `grill-me` wrapper.)
 
 (`writing-great-skills` is from an earlier version of that repo.)
 
