@@ -40,6 +40,10 @@ Docs: <https://www.aihero.dev/skills>
 
 `explain-diff-html`
 
+### ogulcancelik ([ogulcancelik/herdr](https://github.com/ogulcancelik/herdr))
+
+`herdr`: extracted from `herdr --skill` (herdr 0.9.1), regenerated as the tool updates.
+
 ### blader ([blader/humanizer](https://github.com/blader/humanizer))
 
 `humanizer` (MIT). Based on Wikipedia's
