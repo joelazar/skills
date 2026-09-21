@@ -11,6 +11,31 @@ MODE=""
 INPUT=""
 THREAD_ID=""
 FOLLOWUPS=0
+MODEL=""
+
+# Transient upstream failures (Kagi 5xx, agent quota walls) are common enough
+# that a single attempt is not a reliable signal. Retry, then fail loudly.
+RETRIES=3
+
+run_with_retry() {
+    local attempt=1 out status
+    while :; do
+        out="$("$@" 2>&1)"
+        status=$?
+        if [[ $status -eq 0 ]] && ! grep -qiE '^(network error|error):|HTTP 5[0-9][0-9]|reached your .* limit' <<<"$out"; then
+            printf '%s\n' "$out"
+            return 0
+        fi
+        if [[ $attempt -ge $RETRIES ]]; then
+            printf '%s\n' "$out" >&2
+            echo "ERROR: '$1' failed after $attempt attempts" >&2
+            return 1
+        fi
+        echo "retry $attempt/$RETRIES after transient failure" >&2
+        sleep $((attempt * 3))
+        ((attempt++))
+    done
+}
 
 usage() {
     cat <<'EOF'
@@ -26,13 +51,17 @@ Modes:
 Flags:
   --thread-id <id>     ask: continue an existing assistant thread
   --followups          quick: also print follow-up questions
+  --model <name>       google/claude: override the model (e.g. opus)
+
+All modes retry transient upstream failures (5xx, quota walls) up to 3 times
+and exit non-zero if every attempt fails.
 
 Examples:
   web-research.sh quick "latest stable rust version"
   web-research.sh ask "compare uv vs poetry for monorepos"
   web-research.sh ask "now show a migration example" --thread-id "<id>"
   web-research.sh google "weather in budapest next 7 days"
-  web-research.sh claude "weather in budapest next 7 days"
+  web-research.sh claude "deep comparison of X and Y" --model opus
 
 Not this skill:
   raw result links        -> websearch tool (pi web-tools extension)
@@ -56,6 +85,10 @@ while [[ $# -gt 0 ]]; do
     --followups)
         FOLLOWUPS=1
         shift
+        ;;
+    --model)
+        MODEL="$2"
+        shift 2
         ;;
     -h | --help)
         usage
@@ -88,14 +121,16 @@ google)
         echo "ERROR: agy CLI not on PATH" >&2
         exit 127
     }
-    exec agy -p "$PROMPT" --print-timeout 2m
+    run_with_retry agy -p "$PROMPT" --print-timeout 5m ${MODEL:+--model "$MODEL"}
+    exit $?
     ;;
 claude)
     command -v claude >/dev/null 2>&1 || {
         echo "ERROR: claude CLI not on PATH" >&2
         exit 127
     }
-    exec claude -p "$PROMPT" --allowedTools WebSearch WebFetch
+    run_with_retry claude -p "$PROMPT" ${MODEL:+--model "$MODEL"} --allowedTools WebSearch WebFetch
+    exit $?
     ;;
 esac
 
@@ -106,7 +141,7 @@ command -v kagi >/dev/null 2>&1 || {
 
 case "$MODE" in
 quick)
-    out="$(kagi quick "$INPUT")"
+    out="$(run_with_retry kagi quick "$INPUT")" || exit 1
     jq -r '.message.markdown' <<<"$out"
     echo
     jq -r '.references.markdown // empty' <<<"$out"
@@ -117,9 +152,9 @@ quick)
 
 ask)
     if [[ -n "$THREAD_ID" ]]; then
-        kagi assistant --thread-id "$THREAD_ID" --format markdown "$INPUT"
+        run_with_retry kagi assistant --thread-id "$THREAD_ID" --format markdown "$INPUT"
     else
-        kagi assistant --format markdown "$INPUT"
+        run_with_retry kagi assistant --format markdown "$INPUT"
     fi
     ;;
 

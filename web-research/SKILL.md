@@ -23,11 +23,30 @@ YouTube URL condensed → `webfetch` with `summarize=summary`.
 | `claude` | `claude -p`        | User says "use claude" / "ask claude".                                                                |
 
 Start at `quick`; escalate to `ask` only when a fact lookup cannot answer it.
+For a question worth cross-checking, run several modes and reconcile: they
+surface different sources, and disagreement is itself a finding.
 
-## `ask` is slow
+`--model <name>` overrides the model for `google` and `claude`. Reach for
+`--model opus` when `claude` hits a quota wall on its default model, or when
+the question needs depth.
 
-Short prompts return in seconds, long multi-part ones in 2–3 minutes. Give it a
-300s tool timeout and let it run to completion — the wait is normal.
+## Timeouts
+
+| Mode | Typical | Tool timeout |
+| --- | --- | --- |
+| `quick` | ~10s | 60s |
+| `ask` | seconds to 3 min | 400s |
+| `google` | 1–5 min | 600s |
+| `claude` | 1–5 min | 600s |
+
+Long waits are normal, not hangs. Let them finish; aborting wastes the whole
+call.
+
+## Failures
+
+All modes retry transient failures 3 times with backoff — Kagi Assistant 5xx
+and agent quota walls both happen and both usually clear. Errors go to stderr
+and exit non-zero, so a failure never reads like an answer.
 
 ## Setup
 
