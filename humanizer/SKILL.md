@@ -7,6 +7,7 @@ description: |
   language, stock AI words, bold labels, or filler. Based on Wikipedia's "Signs of AI writing."
 license: MIT
 metadata:
+  source: https://github.com/blader/humanizer/blob/9862685f575c/SKILL.md
   version: "3.0.0"
 ---
 

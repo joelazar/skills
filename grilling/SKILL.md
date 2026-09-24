@@ -2,6 +2,8 @@
 name: grilling
 description: A relentless interview that stress-tests a plan, decision, or idea.
 disable-model-invocation: true
+metadata:
+  source: https://github.com/mattpocock/skills/tree/85f83d3fde1d/skills/productivity/grilling
 ---
 
 Interview the user relentlessly until you reach a shared understanding. Map this as a **design tree**: every decision branches into the decisions that hang off it.

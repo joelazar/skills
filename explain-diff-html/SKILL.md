@@ -2,6 +2,8 @@
 name: explain-diff-html
 description: Use when the user asks for a rich explanation of a code change, diff, branch, or PR. Produces a self-contained interactive HTML report with background, intuition, code walkthrough, and a quiz.
 disable-model-invocation: true
+metadata:
+  source: https://gist.github.com/geoffreylitt/a29df1b5f9865506e8952488eac3d524/126e7fe9eeca
 ---
 
 # Explain Diff

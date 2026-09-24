@@ -8,6 +8,10 @@ Most of these are not mine. They come from other people's repos and are vendored
 here (sometimes lightly edited). Attribution is below; licenses of the original
 projects apply to those directories.
 
+Each vendored `SKILL.md` pins its upstream commit in `metadata.source`.
+`.agents/skills/upstream-sync/status.sh` lists the upstream commits since then, and the
+`upstream-sync` skill reviews them and proposes what to port.
+
 ## Install
 
 ```bash
@@ -20,11 +24,9 @@ My [dotfiles](https://github.com/joelazar/dotfiles) do this during first-run set
 
 ### Matt Pocock ([mattpocock/skills](https://github.com/mattpocock/skills))
 
-`grilling`, `improve-codebase-architecture`, `writing-great-skills`
+`grilling`, `improve-codebase-architecture`, `writing-for-agents`
 
 (`grilling` is made user-invoked here, replacing upstream's `grill-me` wrapper.)
-
-(`writing-great-skills` is from an earlier version of that repo.)
 
 Docs: <https://www.aihero.dev/skills>
 
@@ -48,6 +50,14 @@ Docs: <https://www.aihero.dev/skills>
 
 `humanizer` (MIT). Based on Wikipedia's
 [Signs of AI writing](https://en.wikipedia.org/wiki/Wikipedia:Signs_of_AI_writing).
+
+### Cole Medin ([coleam00/excalidraw-diagram-skill](https://github.com/coleam00/excalidraw-diagram-skill))
+
+`excalidraw-diagram`: Excalidraw import pinned to `@0.18.0`, paths rewritten to `~/.agents/skills`.
+
+### Cursor ([cursor/plugins](https://github.com/cursor/plugins))
+
+`unslop`, from the `pstack` plugin.
 
 ### Paul Bakaus ([pbakaus/impeccable](https://github.com/pbakaus/impeccable))
 

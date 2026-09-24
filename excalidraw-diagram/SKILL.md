@@ -2,6 +2,8 @@
 name: excalidraw-diagram
 description: Create Excalidraw diagram JSON files that make visual arguments. Use when the user wants to visualize workflows, architectures, or concepts.
 disable-model-invocation: true
+metadata:
+  source: https://github.com/coleam00/excalidraw-diagram-skill/tree/8646fcc9f74f
 ---
 
 # Excalidraw Diagram Creator
