@@ -26,7 +26,8 @@ My [dotfiles](https://github.com/joelazar/dotfiles) do this during first-run set
 
 `grilling`, `improve-codebase-architecture`, `writing-for-agents`
 
-(`grilling` is made user-invoked here, replacing upstream's `grill-me` wrapper.)
+(`grilling` is made user-invoked here, replacing upstream's `grill-me` wrapper, and asks
+through an ask-user tool when one is available.)
 
 Docs: <https://www.aihero.dev/skills>
 
