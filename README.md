@@ -54,7 +54,7 @@ Docs: <https://www.aihero.dev/skills>
 
 ### Cole Medin ([coleam00/excalidraw-diagram-skill](https://github.com/coleam00/excalidraw-diagram-skill))
 
-`excalidraw-diagram`: Excalidraw import pinned to `@0.18.0`, paths rewritten to `~/.agents/skills`.
+`excalidraw` (upstream `excalidraw-diagram`): renamed, made model-invoked, and extended with Obsidian `.excalidraw.md` support (convert/check/repair script, plugin reference). Excalidraw import pinned to `@0.18.0`, paths rewritten to `~/.agents/skills`.
 
 ### Cursor ([cursor/plugins](https://github.com/cursor/plugins))
 

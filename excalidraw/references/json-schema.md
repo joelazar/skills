@@ -10,7 +10,7 @@
 | `arrow` | Connections between shapes |
 | `text` | Labels inside shapes |
 | `line` | Non-arrow connections |
-| `frame` | Grouping containers |
+| `frame` | Named section; `name` is what `![[file#^frame=name]]` embeds in Obsidian |
 
 ## Common Properties
 
@@ -18,7 +18,7 @@ All elements share these:
 
 | Property | Type | Description |
 |----------|------|-------------|
-| `id` | string | Unique identifier |
+| `id` | string | Unique, exactly 8 chars `[A-Za-z0-9]` (Obsidian plugin requirement) |
 | `type` | string | Element type |
 | `x`, `y` | number | Position in pixels |
 | `width`, `height` | number | Size in pixels |
@@ -36,9 +36,11 @@ All elements share these:
 | Property | Description |
 |----------|-------------|
 | `text` | The display text |
-| `originalText` | Same as text |
+| `originalText` | Same as text (unwrapped source) |
+| `lineHeight` | 1.25 |
+| `autoResize` | true: width follows the text |
 | `fontSize` | Size in pixels (16-20 recommended) |
-| `fontFamily` | 3 for monospace (use this) |
+| `fontFamily` | 1 Virgil, 2 Helvetica, 3 Cascadia (monospace, use this), 5 Excalifont, 6 Nunito, 7 Lilita One, 8 Comic Shanns, 9 Liberation Sans |
 | `textAlign` | "left", "center", "right" |
 | `verticalAlign` | "top", "middle", "bottom" |
 | `containerId` | ID of parent shape |

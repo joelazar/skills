@@ -1,12 +1,12 @@
 # Element Templates
 
-Copy-paste JSON templates for each Excalidraw element type. The `strokeColor` and `backgroundColor` values are placeholders — always pull actual colors from `color-palette.md` based on the element's semantic purpose.
+Copy-paste JSON templates for each Excalidraw element type. The `strokeColor` and `backgroundColor` values are placeholders — always pull actual colors from `color-palette.md` based on the element's semantic purpose. Every `id` is exactly 8 chars `[A-Za-z0-9]`; text `width`/`height` follow the formula in `design.md` → Text Rules.
 
 ## Free-Floating Text (no container)
 ```json
 {
   "type": "text",
-  "id": "label1",
+  "id": "title001",
   "x": 100, "y": 100,
   "width": 200, "height": 25,
   "text": "Section Title",
@@ -40,7 +40,7 @@ Copy-paste JSON templates for each Excalidraw element type. The `strokeColor` an
 ```json
 {
   "type": "line",
-  "id": "line1",
+  "id": "line0001",
   "x": 100, "y": 100,
   "width": 0, "height": 200,
   "strokeColor": "<structural line color from palette>",
@@ -67,7 +67,7 @@ Copy-paste JSON templates for each Excalidraw element type. The `strokeColor` an
 ```json
 {
   "type": "ellipse",
-  "id": "dot1",
+  "id": "dot00001",
   "x": 94, "y": 94,
   "width": 12, "height": 12,
   "strokeColor": "<marker dot color from palette>",
@@ -93,7 +93,7 @@ Copy-paste JSON templates for each Excalidraw element type. The `strokeColor` an
 ```json
 {
   "type": "rectangle",
-  "id": "elem1",
+  "id": "rect0001",
   "x": 100, "y": 100, "width": 180, "height": 90,
   "strokeColor": "<stroke from palette based on semantic purpose>",
   "backgroundColor": "<fill from palette based on semantic purpose>",
@@ -108,7 +108,7 @@ Copy-paste JSON templates for each Excalidraw element type. The `strokeColor` an
   "versionNonce": 67890,
   "isDeleted": false,
   "groupIds": [],
-  "boundElements": [{"id": "text1", "type": "text"}],
+  "boundElements": [{"id": "text0001", "type": "text"}],
   "link": null,
   "locked": false,
   "roundness": {"type": 3}
@@ -119,7 +119,7 @@ Copy-paste JSON templates for each Excalidraw element type. The `strokeColor` an
 ```json
 {
   "type": "text",
-  "id": "text1",
+  "id": "text0001",
   "x": 130, "y": 132,
   "width": 120, "height": 25,
   "text": "Process",
@@ -144,7 +144,7 @@ Copy-paste JSON templates for each Excalidraw element type. The `strokeColor` an
   "boundElements": null,
   "link": null,
   "locked": false,
-  "containerId": "elem1",
+  "containerId": "rect0001",
   "lineHeight": 1.25
 }
 ```
@@ -153,7 +153,7 @@ Copy-paste JSON templates for each Excalidraw element type. The `strokeColor` an
 ```json
 {
   "type": "arrow",
-  "id": "arrow1",
+  "id": "arrow001",
   "x": 282, "y": 145, "width": 118, "height": 0,
   "strokeColor": "<arrow color — typically matches source element's stroke from palette>",
   "backgroundColor": "transparent",
@@ -172,8 +172,8 @@ Copy-paste JSON templates for each Excalidraw element type. The `strokeColor` an
   "link": null,
   "locked": false,
   "points": [[0, 0], [118, 0]],
-  "startBinding": {"elementId": "elem1", "focus": 0, "gap": 2},
-  "endBinding": {"elementId": "elem2", "focus": 0, "gap": 2},
+  "startBinding": {"elementId": "rect0001", "focus": 0, "gap": 2},
+  "endBinding": {"elementId": "rect0002", "focus": 0, "gap": 2},
   "startArrowhead": null,
   "endArrowhead": "arrow"
 }

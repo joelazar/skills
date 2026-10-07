@@ -1,22 +1,6 @@
----
-name: excalidraw-diagram
-description: Create Excalidraw diagram JSON files that make visual arguments. Use when the user wants to visualize workflows, architectures, or concepts.
-disable-model-invocation: true
-metadata:
-  source: https://github.com/coleam00/excalidraw-diagram-skill/tree/8646fcc9f74f
----
+# Diagram design
 
-# Excalidraw Diagram Creator
-
-Generate `.excalidraw` JSON files that **argue visually**, not just display information.
-
-**Setup:** If the user asks you to set up this skill (renderer, dependencies, etc.), see `README.md` for instructions.
-
-## Customization
-
-**All colors and brand-specific styles live in one file:** `references/color-palette.md`. Read it before generating any diagram and use it as the single source of truth for all color choices — shape fills, strokes, text colors, evidence artifact backgrounds, everything.
-
-To make this skill produce diagrams in your own brand style, edit `color-palette.md`. Everything else in this file is universal design methodology and Excalidraw best practices.
+How to design a diagram that **argues visually**, not just displays information. Read this for a new diagram or a redesign; colors come from [`color-palette.md`](color-palette.md), JSON from [`element-templates.md`](element-templates.md) and [`json-schema.md`](json-schema.md).
 
 ---
 
@@ -204,7 +188,7 @@ Before JSON, mentally trace how the eye moves through the diagram. There should 
 Only now create the Excalidraw elements. **See below for how to handle large diagrams.**
 
 ### Step 6: Render & Validate (MANDATORY)
-After generating the JSON, you MUST run the render-view-fix loop until the diagram looks right. This is not optional — see the **Render & Validate** section below for the full process.
+Run the render loop from `SKILL.md`. On top of its defect check, audit the render against Steps 1-4: does the structure match the plan, does each section use its intended pattern, does the eye follow the planned order, are hero elements dominant, are evidence artifacts readable?
 
 ---
 
@@ -218,7 +202,7 @@ After generating the JSON, you MUST run the render-view-fix loop until the diagr
 
 1. **Create the base file** with the JSON wrapper (`type`, `version`, `appState`, `files`) and the first section of elements.
 2. **Add one section per edit.** Each section gets its own dedicated pass — take your time with it. Think carefully about the layout, spacing, and how this section connects to what's already there.
-3. **Use descriptive string IDs** (e.g., `"trigger_rect"`, `"arrow_fan_left"`) so cross-section references are readable.
+3. **Use descriptive 8-character IDs** from `[A-Za-z0-9]` (e.g., `"trigRect"`, `"fanArrL1"`, `"s2Title0"`) so cross-section references are readable. Exactly 8: the Obsidian plugin corrupts any other length (see `SKILL.md`).
 4. **Namespace seeds by section** (e.g., section 1 uses 100xxx, section 2 uses 200xxx) to avoid collisions.
 5. **Update cross-section bindings** as you go. When a new section's element needs to bind to an element from a previous section (e.g., an arrow connecting sections), edit the earlier element's `boundElements` array at the same time.
 
@@ -233,7 +217,7 @@ Fix any alignment or binding issues before rendering.
 
 **Phase 3: Render & validate**
 
-Now run the render-view-fix loop from the Render & Validate section. This is where you'll catch visual issues that aren't obvious from JSON — overlaps, clipping, imbalanced composition.
+Now run the render loop from `SKILL.md`. This is where you'll catch visual issues that aren't obvious from JSON — overlaps, clipping, imbalanced composition.
 
 ### Section Boundaries
 
@@ -351,7 +335,7 @@ Choose shape based on what it represents—or use no shape at all:
 
 ## Color as Meaning
 
-Colors encode information, not decoration. Every color choice should come from `references/color-palette.md` — the semantic shape colors, text hierarchy colors, and evidence artifact colors are all defined there.
+Colors encode information, not decoration. Every color choice should come from `color-palette.md` — the semantic shape colors, text hierarchy colors, and evidence artifact colors are all defined there.
 
 **Key principles:**
 - Each semantic purpose (start, end, decision, AI, error, etc.) has a specific fill/stroke pair
@@ -423,6 +407,12 @@ Position alone doesn't show relationships. If A relates to B, there must be an a
 
 Settings: `fontSize: 16`, `fontFamily: 3`, `textAlign: "center"`, `verticalAlign: "middle"`
 
+**Size text exactly.** `fontFamily: 3` (Cascadia) is monospace, so:
+- `width = longest line chars × fontSize × 0.5859375`
+- `height = line count × fontSize × lineHeight` (`lineHeight: 1.25`)
+
+A bound text (`containerId` set) is centered in its container: `x = c.x + (c.width - width) / 2`, same for `y`. Wrong sizes make Excalidraw re-wrap or grow the container when the file is opened.
+
 ---
 
 ## JSON Structure
@@ -443,73 +433,10 @@ Settings: `fontSize: 16`, `fontFamily: 3`, `textAlign: "center"`, `verticalAlign
 
 ## Element Templates
 
-See `references/element-templates.md` for copy-paste JSON templates for each element type (text, line, dot, rectangle, arrow). Pull colors from `references/color-palette.md` based on each element's semantic purpose.
+See `element-templates.md` for copy-paste JSON templates for each element type (text, line, dot, rectangle, arrow). Pull colors from `color-palette.md` based on each element's semantic purpose.
 
 ---
 
-## Render & Validate (MANDATORY)
-
-You cannot judge a diagram from JSON alone. After generating or editing the Excalidraw JSON, you MUST render it to PNG, view the image, and fix what you see — in a loop until it's right. This is a core part of the workflow, not a final check.
-
-### How to Render
-
-```bash
-cd ~/.agents/skills/excalidraw-diagram/references && uv run python render_excalidraw.py <absolute-path-to-file.excalidraw>
-```
-
-This outputs a PNG next to the `.excalidraw` file. Then use the **Read tool** on the PNG to actually view it.
-
-### The Loop
-
-After generating the initial JSON, run this cycle:
-
-**1. Render & View** — Run the render script, then Read the PNG.
-
-**2. Audit against your original vision** — Before looking for bugs, compare the rendered result to what you designed in Steps 1-4. Ask:
-- Does the visual structure match the conceptual structure you planned?
-- Does each section use the pattern you intended (fan-out, convergence, timeline, etc.)?
-- Does the eye flow through the diagram in the order you designed?
-- Is the visual hierarchy correct — hero elements dominant, supporting elements smaller?
-- For technical diagrams: are the evidence artifacts (code snippets, data examples) readable and properly placed?
-
-**3. Check for visual defects:**
-- Text clipped by or overflowing its container
-- Text or shapes overlapping other elements
-- Arrows crossing through elements instead of routing around them
-- Arrows landing on the wrong element or pointing into empty space
-- Labels floating ambiguously (not clearly anchored to what they describe)
-- Uneven spacing between elements that should be evenly spaced
-- Sections with too much whitespace next to sections that are too cramped
-- Text too small to read at the rendered size
-- Overall composition feels lopsided or unbalanced
-
-**4. Fix** — Edit the JSON to address everything you found. Common fixes:
-- Widen containers when text is clipped
-- Adjust `x`/`y` coordinates to fix spacing and alignment
-- Add intermediate waypoints to arrow `points` arrays to route around elements
-- Reposition labels closer to the element they describe
-- Resize elements to rebalance visual weight across sections
-
-**5. Re-render & re-view** — Run the render script again and Read the new PNG.
-
-**6. Repeat** — Keep cycling until the diagram passes both the vision check (Step 2) and the defect check (Step 3). Typically takes 2-4 iterations. Don't stop after one pass just because there are no critical bugs — if the composition could be better, improve it.
-
-### When to Stop
-
-The loop is done when:
-- The rendered diagram matches the conceptual design from your planning steps
-- No text is clipped, overlapping, or unreadable
-- Arrows route cleanly and connect to the right elements
-- Spacing is consistent and the composition is balanced
-- You'd be comfortable showing it to someone without caveats
-
-### First-Time Setup
-Already set up on this machine (uv venv + chromium installed). If it ever breaks:
-```bash
-cd ~/.agents/skills/excalidraw-diagram/references
-uv sync
-uv run playwright install chromium
-```
 
 ---
 
@@ -539,17 +466,11 @@ uv run playwright install chromium
 15. **Hierarchy**: Important elements are larger/more isolated
 
 ### Technical
-16. **Text clean**: `text` contains only readable words
-17. **Font**: `fontFamily: 3`
-18. **Roughness**: `roughness: 0` for clean/modern (unless hand-drawn style requested)
-19. **Opacity**: `opacity: 100` for all elements (no transparency)
-20. **Container ratio**: <30% of text elements should be inside containers
+16. **Text clean**: `text` contains only readable words; `text` == `originalText`
+17. **Font**: `fontFamily: 3`, widths from the formula in Text Rules
+18. **IDs**: every `id` exactly 8 chars `[A-Za-z0-9]`
+19. **Roughness**: `roughness: 0` for clean/modern (unless hand-drawn style requested)
+20. **Opacity**: `opacity: 100` for all elements (no transparency)
+21. **Container ratio**: <30% of text elements should be inside containers
 
-### Visual Validation (Render Required)
-21. **Rendered to PNG**: Diagram has been rendered and visually inspected
-22. **No text overflow**: All text fits within its container
-23. **No overlapping elements**: Shapes and text don't overlap unintentionally
-24. **Even spacing**: Similar elements have consistent spacing
-25. **Arrows land correctly**: Arrows connect to intended elements without crossing others
-26. **Readable at export size**: Text is legible in the rendered PNG
-27. **Balanced composition**: No large empty voids or overcrowded regions
+Then the render loop in `SKILL.md` covers overflow, overlap, spacing, arrows, and balance.

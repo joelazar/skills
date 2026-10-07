@@ -1,0 +1,6 @@
+.venv/
+__pycache__/
+*.png
+uv.lock
+node_modules/
+package-lock.json
