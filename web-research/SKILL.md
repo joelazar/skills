@@ -7,9 +7,8 @@ disable-model-invocation: true
 
 # Web research
 
-Someone else does the synthesis. Plain retrieval belongs to the pi `web-tools`
-extension: result links → `websearch`, one page → `webfetch`, one page or
-YouTube URL condensed → `webfetch` with `summarize=summary`.
+Someone else does the synthesis. Plain retrieval belongs to the agent's own web
+search and web fetch tools: result links → web search, one page → web fetch.
 
 ```bash
 ~/.agents/skills/web-research/web-research.sh <mode> "<question>" [flags]

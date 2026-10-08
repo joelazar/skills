@@ -1,6 +1,6 @@
 ---
 name: unslop
-description: Cut AI tells from any writing. Must always apply.
+description: "Cut AI tells from prose. Use when writing or editing text for people: docs, READMEs, PR descriptions, commit messages, comments, messages."
 metadata:
   source: https://github.com/cursor/plugins/tree/12d587dfb207/pstack/skills/unslop
 ---

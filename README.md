@@ -66,5 +66,5 @@ Docs: <https://www.aihero.dev/skills>
 
 ## Mine
 
-- `simplify`: behavior-preserving cleanup of recently touched code.
+- `simplify-touched`: behavior-preserving cleanup of recently touched code.
 - `web-research`: Kagi-backed search/summarize helper (`web-research.sh`).
