@@ -1,8 +1,7 @@
 ---
 name: web-research
-description: "Synthesized answers from the web: a fact with sources, a comparison or multi-step question, or a second opinion when the user says \"use google\" or \"ask claude\". For raw result links or reading one URL, use the websearch and webfetch tools instead."
+description: "Research a question on the web for a synthesized, sourced answer: a fact, a comparison or multi-step question, docs or API facts, findings to save as a note, or a second opinion (\"use google\", \"ask claude\"). Raw result links or one URL: use websearch or webfetch."
 allowed-tools: [Bash, Read]
-disable-model-invocation: true
 ---
 
 # Web research
@@ -28,6 +27,19 @@ surface different sources, and disagreement is itself a finding.
 `--model <name>` overrides the model for `google` and `claude`. Reach for
 `--model opus` when `claude` hits a quota wall on its default model, or when
 the question needs depth.
+
+## Primary sources
+
+Trust **primary sources**: official docs, source code, specs, first-party APIs.
+A synthesized answer is a lead, not a citation: follow each claim back to the
+source that owns it (webfetch the page, read the code) before relying on it.
+Done when every claim you report names its owning source.
+
+## Saving findings
+
+When the user wants the research kept, write one Markdown file with every claim
+citing its source. Save it where the repo already keeps notes; with no
+convention, pick a sensible spot and say where.
 
 ## Timeouts
 
