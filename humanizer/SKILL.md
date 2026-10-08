@@ -9,6 +9,7 @@ license: MIT
 metadata:
   source: https://github.com/blader/humanizer/blob/225a6f39ac85/SKILL.md
   version: "3.1.0"
+disable-model-invocation: true
 ---
 
 # Humanizer: remove AI writing patterns
