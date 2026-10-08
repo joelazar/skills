@@ -24,7 +24,8 @@ My [dotfiles](https://github.com/joelazar/dotfiles) do this during first-run set
 
 ### Matt Pocock ([mattpocock/skills](https://github.com/mattpocock/skills))
 
-`grilling`, `improve-codebase-architecture`, `writing-for-agents`
+`codebase-design`, `domain-modeling`, `grilling`, `handoff`, `improve-codebase-architecture`, `pr`,
+`retro`, `wait-what`, `writing-for-agents`
 
 (`grilling` is made user-invoked here, replacing upstream's `grill-me` wrapper, and asks
 through an ask-user tool when one is available.)
