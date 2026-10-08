@@ -4,7 +4,7 @@
 //
 //   node excalidraw-md.mjs extract <in.excalidraw.md> [out.excalidraw]   # stdout without out
 //   node excalidraw-md.mjs pack    <in.excalidraw> <out.excalidraw.md>   # keeps out's frontmatter + back-of-card
-//   node excalidraw-md.mjs check   <file.excalidraw.md>                  # exit 1 on problems
+//   node excalidraw-md.mjs check   <file.excalidraw[.md]>                # exit 1 on problems
 //   node excalidraw-md.mjs repair  <file.excalidraw.md>                  # unglue text, fix ids, rewrite
 //
 // Setup once: cd ~/.agents/skills/excalidraw/scripts && npm i
@@ -106,12 +106,28 @@ function toMd(scene, existingMd) {
   return { md, renamed };
 }
 
-function check(md) {
-  const scene = readScene(md);
-  const byId = new Map(scene.elements.map((e) => [e.id, e]));
+// Shared ids make the plugin attach one text block to several elements; no rename can tell
+// which binding meant which, so this is fixed at the source, never repaired.
+function duplicateIds(scene) {
+  const seen = new Set();
+  return [...new Set(scene.elements.map((e) => e.id).filter((id) => seen.has(id) || !seen.add(id)))];
+}
+
+function idProblems(scene) {
   const problems = [];
   const bad = scene.elements.filter((e) => !PARSEABLE_ID.test(e.id)).map((e) => e.id);
   if (bad.length) problems.push(`${bad.length} ids not 8 chars [A-Za-z0-9_-]: ${bad.slice(0, 8).join(", ")}${bad.length > 8 ? ", …" : ""}`);
+  const dup = duplicateIds(scene);
+  if (dup.length) problems.push(`${dup.length} duplicate ids: ${dup.slice(0, 8).join(", ")}${dup.length > 8 ? ", …" : ""}`);
+  return problems;
+}
+
+function check(src) {
+  if (src.trimStart().startsWith("{")) return { problems: idProblems(JSON.parse(src)) };
+  const md = src;
+  const scene = readScene(md);
+  const byId = new Map(scene.elements.map((e) => [e.id, e]));
+  const problems = idProblems(scene);
   const seen = new Set();
   for (const { id, text } of parseTextSection(md)) {
     seen.add(id);
@@ -152,7 +168,10 @@ switch (cmd) {
     break;
   }
   case "pack": {
-    const { md, renamed } = toMd(JSON.parse(read(a)), fs.existsSync(b) ? read(b) : null);
+    const scene = JSON.parse(read(a));
+    const dup = duplicateIds(scene);
+    if (dup.length) throw new Error(`${a}: duplicate ids, give each element its own: ${dup.join(", ")}`);
+    const { md, renamed } = toMd(scene, fs.existsSync(b) ? read(b) : null);
     fs.writeFileSync(b, md);
     const { problems } = check(md);
     if (problems.length) throw new Error(`packed file fails check:\n${problems.join("\n")}`);
