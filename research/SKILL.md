@@ -1,16 +1,16 @@
 ---
-name: web-research
+name: research
 description: "Research a question on the web for a synthesized, sourced answer: a fact, a comparison or multi-step question, docs or API facts, findings to save as a note, or a second opinion (\"use google\", \"ask claude\"). Raw result links or one URL: use websearch or webfetch."
 allowed-tools: [Bash, Read]
 ---
 
-# Web research
+# Research
 
 Someone else does the synthesis. Plain retrieval belongs to the agent's own web
 search and web fetch tools: result links → web search, one page → web fetch.
 
 ```bash
-~/.agents/skills/web-research/web-research.sh <mode> "<question>" [flags]
+~/.agents/skills/research/research.sh <mode> "<question>" [flags]
 ```
 
 | Mode     | Backend            | Use when                                                                                             |

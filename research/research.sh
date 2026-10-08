@@ -40,7 +40,7 @@ run_with_retry() {
 usage() {
     cat <<'EOF'
 Usage:
-  web-research.sh <mode> "<question>" [flags]
+  research.sh <mode> "<question>" [flags]
 
 Modes:
   quick      Grounded answer with ranked source links. Default for facts.
@@ -57,11 +57,11 @@ All modes retry transient upstream failures (5xx, quota walls) up to 3 times
 and exit non-zero if every attempt fails.
 
 Examples:
-  web-research.sh quick "latest stable rust version"
-  web-research.sh ask "compare uv vs poetry for monorepos"
-  web-research.sh ask "now show a migration example" --thread-id "<id>"
-  web-research.sh google "weather in budapest next 7 days"
-  web-research.sh claude "deep comparison of X and Y" --model opus
+  research.sh quick "latest stable rust version"
+  research.sh ask "compare uv vs poetry for monorepos"
+  research.sh ask "now show a migration example" --thread-id "<id>"
+  research.sh google "weather in budapest next 7 days"
+  research.sh claude "deep comparison of X and Y" --model opus
 
 Not this skill:
   raw result links        -> websearch tool (pi web-tools extension)

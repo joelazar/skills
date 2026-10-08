@@ -68,4 +68,4 @@ Docs: <https://www.aihero.dev/skills>
 ## Mine
 
 - `simplify-touched`: behavior-preserving cleanup of recently touched code.
-- `web-research`: Kagi-backed search/summarize helper (`web-research.sh`), with the primary-source and saved-findings rules of mattpocock/skills `research`.
+- `research`: Kagi-backed search/summarize helper (`research.sh`), with the primary-source and saved-findings rules of mattpocock/skills `research`.
