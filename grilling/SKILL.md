@@ -3,7 +3,7 @@ name: grilling
 description: A relentless interview that stress-tests a plan, decision, or idea.
 disable-model-invocation: true
 metadata:
-  source: https://github.com/mattpocock/skills/tree/85f83d3fde1d/skills/productivity/grilling
+  source: https://github.com/mattpocock/skills/tree/f3fc5632f401/skills/productivity/grilling
 ---
 
 Interview the user relentlessly until you reach a shared understanding. Map this as a **design tree**: every decision branches into the decisions that hang off it.
@@ -23,6 +23,8 @@ Format a round like so:
 
 ➡️ <your recommended answer>
 ```
+
+Word each question so "yes" accepts your recommended answer.
 
 If an ask-user tool is available (`ask_user`, `AskUserQuestion`, or similar), use it instead of the text format. Put each frontier question to the user in its own call, and make all the calls for a round before waiting on answers. List your recommended answer as the first option and mark it `(Recommended)`. Frontier questions whose answers can't be listed as choices still go in the text format.
 
