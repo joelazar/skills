@@ -10,6 +10,8 @@ metadata:
     url: "https://github.com/humanlayer/skills/blob/main/plugins/show-me/skills/show-me/SKILL.md"
 ---
 
+Always assign the PR to the current user: `gh pr create --assignee @me`. For an existing PR: `gh pr edit --add-assignee @me`.
+
 Use this template for writing the PR body:
 
 ```markdown
