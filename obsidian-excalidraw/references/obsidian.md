@@ -40,7 +40,7 @@ N4KAkARALgngDgUwgLgAQQQDwMYEMA2AlgCYBOuA7hADTgQBuCpAzoQPYB2KqATLZMzYBXUtiRoIACyh
 ## Hazards
 
 - **Formatters and linters.** Obsidian Linter (heading blank lines, `remove-multiple-spaces`, `ordered-list-style`, and so on) corrupts `## Text Elements`. Exclude drawings with the Linter's "Files to ignore" regex `\.excalidraw\.md$`; in `.obsidian/plugins/obsidian-linter/data.json` that's `filesToIgnore: [{"label":"Excalidraw","match":"\\.excalidraw\\.md$","flags":""}]`. If linting can't be avoided, turn on the plugin setting "Linter compatibility", which adds a dummy first text element.
-- **Open tabs autosave.** The plugin holds the scene in memory and saves it over the file. Before editing a drawing on disk, close its tab, or after editing run "Reload app without saving".
+- **Open tabs autosave.** The plugin holds the scene in memory and saves it over the file. Edit open drawings through the plugin CLI (`apply`). Before editing a drawing on disk, close its tab, or after editing run "Reload app without saving".
 - **Excalidraw view vs markdown view.** "Toggle between Excalidraw and Markdown mode" flips one file between views. "Decompress current Excalidraw file" makes `## Drawing` readable for a human.
 
 ## Embedding and linking
@@ -85,6 +85,6 @@ From Zsolt Viczián's plugin docs, his Sketch Your Mind community, and Visual PK
 
 ## Moving drawings in and out
 
-- **To excalidraw.com:** `scripts/excalidraw-md.mjs extract`, or from Obsidian on desktop: "Export Image" → **Excalidraw** button. Drawings with vault images must use the plugin export, because `extract` doesn't inline `## Embedded Files`.
+- **To excalidraw.com or Excalidraw+:** `scripts/excalidraw-md.mjs extract`, then drag it onto the canvas or upload it with the `excalidraw` skill, or from Obsidian on desktop: "Export Image" → **Excalidraw** button. Drawings with vault images must use the plugin export, because `extract` doesn't inline `## Embedded Files`.
 - **From excalidraw.com or a generated `.excalidraw`:** `scripts/excalidraw-md.mjs pack`. It renames ids to the 8-char alphabet and writes `## Text Elements`. The plugin can also open a plain `.excalidraw` file, but in compatibility mode with fewer features.
 - **Every save as `.excalidraw` too:** Settings → "Auto-export Excalidraw". This puts a duplicate file in the vault for each drawing.

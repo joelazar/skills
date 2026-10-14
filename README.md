@@ -53,10 +53,6 @@ Docs: <https://www.aihero.dev/skills>
 `humanizer` (MIT). Based on Wikipedia's
 [Signs of AI writing](https://en.wikipedia.org/wiki/Wikipedia:Signs_of_AI_writing).
 
-### Cole Medin ([coleam00/excalidraw-diagram-skill](https://github.com/coleam00/excalidraw-diagram-skill))
-
-`excalidraw` (upstream `excalidraw-diagram`): renamed, made model-invoked, and extended with Obsidian `.excalidraw.md` support (convert/check/repair script, plugin reference). Excalidraw import pinned to `@0.18.0`, paths rewritten to `~/.agents/skills`.
-
 ### Cursor ([cursor/plugins](https://github.com/cursor/plugins))
 
 `unslop`, from the `pstack` plugin.
@@ -69,3 +65,4 @@ Docs: <https://www.aihero.dev/skills>
 
 - `simplify-touched`: behavior-preserving cleanup of recently touched code.
 - `research`: Kagi-backed search/summarize helper (`research.sh`), with the primary-source and saved-findings rules of mattpocock/skills `research`.
+- `obsidian-excalidraw`: Obsidian `.excalidraw.md` drawings through the plugin CLI, plus a convert/check/repair script.
