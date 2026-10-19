@@ -12,19 +12,17 @@ metadata:
 
 Always assign the PR to the current user: `gh pr create --assignee @me`. For an existing PR: `gh pr edit --add-assignee @me`.
 
-Use this template for writing the PR body:
+## Body
 
-```markdown
-## Summary
+No headings. Start directly with the bullets; the title is a separate field.
 
-<diagram, diff-sketch, or tree>
-```
+- 2-4 bullets: what changed and why, in reviewer terms.
+- Describe only what the diff shows. Use the user's domain language from `GLOSSARY.md`.
+- Concise and natural.
 
-## Sections
+Below the bullets, add one visual only when a reviewer would otherwise have to open several files to see the shape of the change (new flow, refactor, moved files, changed logic). Small fixes, config bumps, and renames get bullets only.
 
-Skip all preambles and keep prose brief. Use the user's domain language from `GLOSSARY.md`.
-
-### Summary
+## Visuals
 
 Pick the smallest view that makes the key point clear.
 
