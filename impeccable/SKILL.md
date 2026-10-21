@@ -2,8 +2,8 @@
 name: impeccable
 description: "Use when the user wants to design, redesign, shape, critique, audit, polish, simplify, harden, animate, or otherwise improve a frontend interface: websites, landing pages, dashboards, product UI, components, forms, settings, onboarding, empty states, and native iOS or Android screens. Handles UX review, hierarchy, layout, typography, color, motion, UX copy, accessibility, responsive behavior, edge cases, and capturing or documenting design systems (DESIGN.md, tokens). Also for making bland UI bolder, loud UI quieter, or ambitious visual effects. Not for backend-only or non-UI tasks."
 metadata:
-  source: https://github.com/pbakaus/impeccable/tree/0665bd812ae0/.agents/skills/impeccable
-  version: 4.6.0
+  source: https://github.com/pbakaus/impeccable/tree/dad8dbb3aac2/.agents/skills/impeccable
+  version: 4.7.0
 disable-model-invocation: true
 ---
 
