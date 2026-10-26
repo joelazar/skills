@@ -15,7 +15,7 @@ metadata:
   source: https://gist.github.com/<user>/<id>/<sha>
 ```
 
-No path after `<sha>` means the whole repo is the skill. Upstream clones live at `$(git config --global gj.root)/<host>/<owner>/<repo>` and are cloned with `gj get <host>/<owner>/<repo>`.
+No path after `<sha>` means the whole repo is the skill. Upstream clones live at `$(git config --global gj.root)/<host>/<owner>/<repo>` and are cloned with `git get <host>/<owner>/<repo>`.
 
 ## Steps
 
