@@ -1,6 +1,7 @@
 ---
 name: obsidian-excalidraw
 description: Obsidian Excalidraw plugin drawings (`.excalidraw.md`). Use to create, edit, render, repair or embed drawings in an Obsidian vault, or convert between `.excalidraw` and `.excalidraw.md`.
+disable-model-invocation: true
 ---
 
 # Obsidian Excalidraw
