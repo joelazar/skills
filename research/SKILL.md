@@ -1,6 +1,6 @@
 ---
 name: research
-description: "Research a question on the web for a synthesized, sourced answer: a fact, a comparison or multi-step question, docs or API facts, findings to save as a note, or a second opinion (\"use google\", \"ask claude\"). Raw result links or one URL: use websearch or webfetch."
+description: "Research a question on the web for a synthesized, sourced answer: a fact, a comparison or multi-step question, docs or API facts, findings to save as a note, a second opinion (\"use google\", \"ask claude\"), or the summary or transcript of a YouTube video, podcast, audio/video file, or long document. Raw result links or one short page: use websearch or webfetch."
 allowed-tools: [Bash, Read]
 ---
 
@@ -27,6 +27,22 @@ surface different sources, and disagreement is itself a finding.
 `--model <name>` overrides the model for `google` and `claude`. Reach for
 `--model opus` when `claude` hits a quota wall on its default model, or when
 the question needs depth.
+
+## Videos, podcasts, long documents
+
+One source too long or not text (YouTube, podcast, audio/video file, PDF,
+long page): use the `summarize` CLI. It fetches the transcript itself and
+summarizes through the configured CLI agents.
+
+```bash
+summarize "<url-or-file>" --length medium --plain            # summary, ~15s
+summarize "<url-or-file>" --extract --timestamps --no-cache --plain  # raw transcript
+```
+
+`--length` takes `short|medium|long|xl` or a char count like `5k`. Use the
+transcript to quote or cite a moment (`[12:34]`), not the summary. Without
+`--no-cache`, `--timestamps` can return empty output after a prior run on the
+same URL. Tool timeout: 300s.
 
 ## Primary sources
 

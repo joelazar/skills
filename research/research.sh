@@ -66,6 +66,7 @@ Examples:
 Not this skill:
   raw result links        -> websearch tool (pi web-tools extension)
   read/summarize one URL  -> webfetch tool, optionally summarize=summary
+  video/podcast/long doc  -> summarize "<url-or-file>" --length medium --plain
 EOF
 }
 
