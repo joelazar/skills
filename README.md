@@ -61,6 +61,10 @@ Docs: <https://www.aihero.dev/skills>
 
 `impeccable` (Apache 2.0). Docs: <https://impeccable.style>
 
+### Hassan El Mghari ([nutlope/hallmark](https://github.com/nutlope/hallmark))
+
+`hallmark` (MIT). Docs: <https://www.usehallmark.com>
+
 ## Mine
 
 - `simplify-touched`: behavior-preserving cleanup of recently touched code.
