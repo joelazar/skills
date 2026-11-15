@@ -5,7 +5,7 @@ argument-hint: "<prompt> | redesign <path> | audit <path>"
 version: 2.0.0
 metadata:
   opencode/slash: "true"
-  source: https://github.com/nutlope/hallmark/tree/407fa689f4a2/skills/hallmark
+  source: https://github.com/nutlope/hallmark/tree/04977e15f3df/skills/hallmark
 disable-model-invocation: true
 ---
 
