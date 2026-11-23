@@ -69,4 +69,5 @@ Docs: <https://www.aihero.dev/skills>
 
 - `simplify-touched`: behavior-preserving cleanup of recently touched code.
 - `research`: Kagi-backed search/summarize helper (`research.sh`), with the primary-source and saved-findings rules of mattpocock/skills `research`.
+- `rex-subagents`: run subagents as interactive pi sessions in Rex tabs, with file briefs, worktrees and `.done` hand-backs.
 - `obsidian-excalidraw`: Obsidian `.excalidraw.md` drawings through the plugin CLI, plus a convert/check/repair script.
