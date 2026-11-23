@@ -30,8 +30,9 @@ the question needs depth.
 
 ## Videos, podcasts, long documents
 
-One source too long or not text (YouTube, podcast, audio/video file, PDF,
-long page): use the `summarize` CLI. It fetches the transcript itself and
+YouTube summary: `webfetch` with `summarize` already runs the `summarize` CLI
+(long, transcript-based). For a raw transcript or another length, or for a
+podcast, audio/video file, PDF or long page, use the `summarize` CLI directly. It fetches the transcript itself and
 summarizes through the configured CLI agents.
 
 ```bash
