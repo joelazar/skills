@@ -3,6 +3,7 @@ name: unslop
 description: "Cut AI tells from prose. Use when writing or editing text for people: docs, READMEs, PR descriptions, commit messages, comments, messages."
 metadata:
   source: https://github.com/cursor/plugins/tree/7a583913eb1b/pstack/skills/unslop
+disable-model-invocation: true
 ---
 
 # Unslop
