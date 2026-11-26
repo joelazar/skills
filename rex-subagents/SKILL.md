@@ -20,15 +20,15 @@ Each subagent is an interactive `pi` in its own Rex tab. Joe watches it and can 
 4. **Launch** each agent:
 
    ```bash
-   rex window new -s "$REX_SESSION" <name> -c <dir> --focus=false --keep-open --json \
+   rex window new -s "$REX_BLOCK" <name> -c <dir> --focus=false --keep-open --json \
      -- pi -n <name> "@<brief path>" | jq -c '{window_id, block: .block_ids[0]}'
    ```
 
-   The positional `<name>` is the tab title. `--keep-open` keeps the tab after pi exits. Pass the brief as `@file`, since inline prompts get mangled by shell quoting. Done when every agent shows up in `rex window ls -s "$REX_SESSION"`.
+   The positional `<name>` is the tab title. `--keep-open` keeps the tab after pi exits. Pass the brief as `@file`, since inline prompts get mangled by shell quoting. Done when every agent shows up in `rex window ls -s "$REX_BLOCK"`.
 5. **Hand back to Joe.** List the tabs, their block ids and where the `.done` files will land, then end your turn. Joe tells you when to collect.
 
 ## Collecting and steering
 
-- Progress: `rex capture -s "$REX_SESSION" -b <block> --trim | tail -20`.
+- Progress: `rex capture -s "$REX_BLOCK" -b <block> --trim | tail -20`.
 - Results: read every `<name>.done`, then `requests.md`. Report any agent that has no `.done` yet as still running.
 - Typing into a tab: `rex send -b <block> "<text>"`, then `rex send-key -b <block> enter`.
